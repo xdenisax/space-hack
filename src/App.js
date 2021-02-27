@@ -1,9 +1,11 @@
 import React from 'react';
-import NavBar from './components/NavBar/NavBar';
+
 import Authentication from './components/Authentication/Authentication';
-import ProfileForm from './components/ProfileForm/ProfileForm'
+
 import { auth, db } from './firebase/FirebaseConfig'
 import './App.css';
+import MainScreen from './components/MainScreen/MainScreen';
+
 
 class App extends React.Component {
 
@@ -16,6 +18,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    
     auth.onAuthStateChanged((user) => {
       if(user !== null){
         const usersRef = db.collection('users').doc(user.uid);
@@ -24,6 +27,7 @@ class App extends React.Component {
               usersRef.onSnapshot((doc) => {
                 this.setState({user: user, isFirstLogin: false})
               });
+             
             } else {
               usersRef.set({
                 displayName: user.displayName,
@@ -32,21 +36,18 @@ class App extends React.Component {
               this.setState({user: user, isFirstLogin: true})
             }
         });
+       
       } else {
         this.setState({user: null, isFirstLogin: false})
       }
     });
+
   }
 
   render() {
     return (
       <div className="App">
-        {this.state.user 
-        ? (<> 
-            <NavBar user={this.state.user} />
-            <ProfileForm isFirstLogin={this.state.isFirstLogin}/> 
-          </>) 
-        : <Authentication userLoggedIn = {this.userLoggedIn}/>}
+        {this.state.user === null ? (<Authentication  />) : (<MainScreen isFirstLogin ={this.state.isFirstLogin} user ={this.state.user}/>)}
      </div>
     );
   }
