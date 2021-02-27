@@ -45,7 +45,7 @@ class App extends React.Component {
             <NavBar user={this.state.user} />
             <ProfileForm isFirstLogin={this.state.isFirstLogin}/> 
           </>) 
-        : <Authentication userLoggedIn = {this.userLoggedIn}/> }
+        : <Authentication userLoggedIn = {this.userLoggedIn}/>}
      </div>
     );
   }
