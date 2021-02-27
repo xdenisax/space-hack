@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { firebase } from '../firebase/FirebaseConfig'
+import { firebase } from '../../firebase/FirebaseConfig'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import './Authentication.css'
 import { Snackbar } from '@material-ui/core';

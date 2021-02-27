@@ -264,7 +264,8 @@ function getStepContent(step) {
   }
 }
 
-export default function ProfileForm() {
+export default function ProfileForm(props) {
+  console.log(props);
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(1);
   const steps = getSteps();

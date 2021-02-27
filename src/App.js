@@ -1,24 +1,38 @@
 import React from 'react';
 import NavBar from './components/NavBar/NavBar';
-import Authentication from './components/Authentication';
+import Authentication from './components/Authentication/Authentication';
 import ProfileForm from './components/ProfileForm/ProfileForm'
-import db from './firebase/FirebaseConfig';
-import { auth } from './firebase/FirebaseConfig'
+import { auth, db } from './firebase/FirebaseConfig'
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      user:null
+      user: null,
+      isFirstLogin: false
     };
   }
 
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
-      console.log(user)
-      if (user) {
-        this.setState({user})
+      if(user !== null){
+        const usersRef = db.collection('users').doc(user.uid);
+        usersRef.get().then((docSnapshot) => {
+            if (docSnapshot.exists) {
+              usersRef.onSnapshot((doc) => {
+                this.setState({user: user, isFirstLogin: false})
+              });
+            } else {
+              usersRef.set({
+                displayName: user.displayName,
+                email: user.email,
+              })
+              this.setState({user: user, isFirstLogin: true})
+            }
+        });
+      } else {
+        this.setState({user: null, isFirstLogin: false})
       }
     });
   }
@@ -29,7 +43,7 @@ class App extends React.Component {
         {this.state.user 
         ? (<> 
             <NavBar user={this.state.user} />
-            <ProfileForm/> 
+            <ProfileForm isFirstLogin={this.state.isFirstLogin}/> 
           </>) 
         : <Authentication userLoggedIn = {this.userLoggedIn}/> }
      </div>

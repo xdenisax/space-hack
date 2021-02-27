@@ -2,18 +2,31 @@ import React from 'react';
 import './NavBar.css';
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-// import db from './firebase/FirebaseConfig';
+import { firebase }from '../../firebase/FirebaseConfig';
 
 class NavBar extends React.Component {
+
+
+  handleLogOut() {
+    firebase.auth().signOut().then((response) => {
+       console.log(response)
+      }).catch((error) => {
+        // An error happened.
+      });
+  }  
+
   render() {
     return (
         <div className="nav-bar">
             <nav> 
-                <div>Logo</div>
+                <div>
+                    <h2 className="nav-logo">Quity.</h2>
+                </div>
                 <ul className="nav-elements">
                     <li>Planificare</li>
                     <li>Profil</li>
                     <IconButton 
+                        onClick ={()=> this.handleLogOut()}
                         style={{"padding":"0", "color":"white"}}>
                             <ExitToAppIcon/>
                     </IconButton>
