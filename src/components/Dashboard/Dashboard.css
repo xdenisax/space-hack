@@ -1,0 +1,9 @@
+.dashboard_container{
+    height: 89vh;
+    padding: 1rem;
+}
+
+.chart_container {
+    width: 70%;
+    height: 50%;
+}
