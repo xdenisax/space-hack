@@ -1,42 +1,76 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { firebase } from '../firebase/FirebaseConfig'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import './Authentication.css'
+import { Snackbar } from '@material-ui/core';
 
 class Authentication extends React.Component {
 
     constructor(props){
         super(props);
+
+        this.state = {
+            snack:{
+                message: "",
+                open:false
+            }
+        }
     }
 
-    logInUser(){
-        var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth()
-  .signInWithPopup(provider)
-  .then((result) => {
-    /** @type {x.auth.OAuthCredential} */
-    var credential = result.credential;
-
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    var token = credential.accessToken;
-    // The signed-in user info.
-    var user = result.user;
-    console.log(user);
-  }).catch((error) => {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // The email of the user's account used.
-    var email = error.email;
-    // The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
-    // ...
-  });
+    centeredStyle = {
+        "position":"absolute",
+        "top":"50%",
+        "left":"50%",
+        "transform":"translate(-50%,-50%)"
     };
+
+    logInUser() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then((result) => {
+            this.setState({
+                snack:{
+                    message: "Success",
+                    open: true,
+                }
+            })
+        }).catch((error) => {
+            this.setState({
+                snack:{
+                    message: error.message,
+                    open: true,
+                }
+            })
+        });
+    };
+
+    handleClose = () =>{
+        this.setState({
+            snack:{
+                message: "error.message",
+                open: false,
+            }
+        })
+    }
 
     render() {
       return (
-        <div className="Authentication">
-            <Button variant="contained" color="primary" onClick={this.logInUser}>Press me</Button>
+        <div>   
+            <h1 className = "logo">Quity.</h1>
+            <div style={this.centeredStyle} className="Authentication">
+                <h1>Pregatit sa demisionezi?</h1>
+                    <Button variant="contained" 
+                        style={{"textAlign":"center"}} 
+                        color="primary" 
+                        onClick={()=>this.logInUser()}
+                        endIcon={<ArrowForwardIcon/>}
+                        >Autentificare</Button>
+            </div>
+            <Snackbar anchorOrigin={ {vertical: "bottom", horizontal: "center" }}
+                open={this.state.open}
+                message={this.state.message}
+                onClose={this.handleClose}>
+            </Snackbar>
         </div>
       );
     }
