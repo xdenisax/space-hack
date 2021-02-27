@@ -1,6 +1,6 @@
 .nav-bar {
     padding: 2rem;
-    background-color: #1769aa;
+    background-color: var(--primary-color);
     color: white;
 }
 

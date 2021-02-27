@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&display=swap');
 
+:root {
+  --primary-color: #1769aa;
+  --accent-color: #00e5ff ;
+  --background: #D6D4D4;
+  --background-contrast: #111111; 
+}
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

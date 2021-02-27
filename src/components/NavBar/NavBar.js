@@ -2,7 +2,6 @@ import React from 'react';
 import './NavBar.css';
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { makeStyles } from '@material-ui/core/styles';
 // import db from './firebase/FirebaseConfig';
 
 class NavBar extends React.Component {
