@@ -3,6 +3,7 @@ import NavBar from './components/NavBar/NavBar';
 import Authentication from './components/Authentication/Authentication';
 import ProfileForm from './components/ProfileForm/ProfileForm'
 import { auth, db } from './firebase/FirebaseConfig'
+import './App.css';
 
 class App extends React.Component {
 

@@ -5,10 +5,60 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 20vw;
-    min-width: 150px;
+    justify-content: center;
 }
 
 .form .outlined-basic { 
     margin: 0.5rem;
+    width: 20vw;
+    min-width: 150px;
+}
+
+.question { 
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+    justify-content: center;
+    align-items: center;
+    max-height: 30vh;
+    margin: 3rem;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 30px 5px rgba(168, 166, 166, 0.24);
+}
+
+.description, .description ~ em {
+    font-size: 1rem;
+    margin: .15rem;
+}
+
+.profile-questionnaire {
+    height: 80vh;
+}
+
+.disclaimer {
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    transform: translate(-50%);
+    font-style: oblique;
+    font-size: 0.9rem;
+}
+
+.risk {
+    display: flex;
+    flex-direction: row;
+    margin: 0rem 5rem;
+    padding: 2rem;
+    height: 50vh;
+    overflow: auto;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 30px 5px rgba(168, 166, 166, 0.64);
+}
+
+.risk > div {
+    width: 50%;
+}
+
+.action-buttons {
+    margin: 2rem;
 }
