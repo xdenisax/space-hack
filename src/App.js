@@ -1,16 +1,31 @@
 import React from 'react';
 import NavBar from './components/NavBar';
 import Authentication from './components/Authentication';
-import db from './firebase/FirebaseConfig';
+import { auth } from './firebase/FirebaseConfig'
 
 class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      user:null
+    };
+  }
+
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      console.log(user)
+      if (user) {
+        this.setState({user})
+      }
+    });
+  }
 
   render() {
     return (
       <div className="App">
-        {/* <NavBar/> */}
-        <Authentication/>      
-      </div>
+        {this.state.user ? <NavBar user={this.state.user} /> : <Authentication userLoggedIn = {this.userLoggedIn}/> }
+     </div>
     );
   }
 }

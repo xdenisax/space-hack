@@ -17,7 +17,7 @@ if (!firebase.apps.length) {
  } else {
     firebase.app(); 
  }
-
+var auth  = firebase.auth();
 var db = firebase.firestore();
 
-export {db, firebase };
+export {db, firebase, auth };
