@@ -16,7 +16,6 @@ class App extends React.Component {
 
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
-      console.log(user)
       if (user) {
         this.setState({user})
       }
@@ -31,7 +30,7 @@ class App extends React.Component {
             <NavBar user={this.state.user} />
             <ProfileForm/> 
           </>) 
-        : <Authentication userLoggedIn = {this.userLoggedIn}/> }
+        : <Authentication userLoggedIn = {this.userLoggedIn}/>}
      </div>
     );
   }

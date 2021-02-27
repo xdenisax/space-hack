@@ -58,13 +58,25 @@ import ErrorIcon from '@material-ui/icons/Error';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import StepConnector from '@material-ui/core/StepConnector';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+
+let userInfo = {};
 
 const handleDateChange = (date) => {
-  console.log(date);
+  userInfo = {...userInfo, date};
+}
+const handleIncomeCompletion = (data) => {
+
 }
 const handleSalaryChange = (event) => {
-  console.log(event.target.value);
+  let salary = event.target.value;
+  userInfo = {
+    ...userInfo, 
+    income: {
+      ...userInfo.income, 
+      salary
+    }
+  };
+  console.log(userInfo);
 }
 const handleBonusChange = (event) => {
   console.log(event.target.value);
@@ -104,13 +116,13 @@ const birthDateCompoenent =
 const incomeComponent = 
   <div className="question">
     <span className="nav-dot"></span>
-    <TextField className="standard-basic" label="Salariu" onChange={handleSalaryChange}/>
-    <TextField className="standard-basic" label="Prime" onChange={handleBonusChange}/>
-    <TextField className="standard-basic" label="Dividende" onChange={handleDividendChange} />
-    <TextField className="standard-basic" label="Dobanzi" onChange={handleReturnChange}/>
-    <TextField className="standard-basic" label="Chirii"onChange={handleRentsChange}/>
-    <TextField className="standard-basic" label="Bursa"onChange={handleSchoalrshipBonusChange}/>
-    <TextField className="standard-basic" label="Alte venituri"onChange={otherIncomesChange}/>
+    <TextField className="outlined-basic" label="Salariu" type="number" variant="outlined" onChange={handleSalaryChange}/>
+    <TextField className="outlined-basic" label="Prime" type="number" variant="outlined" onChange={handleBonusChange}/>
+    <TextField className="outlined-basic" label="Dividende" type="number" variant="outlined" onChange={handleDividendChange} />
+    <TextField className="outlined-basic" label="Dobanzi" type="number" variant="outlined" onChange={handleReturnChange}/>
+    <TextField className="outlined-basic" label="Chirii" type="number" variant="outlined" onChange={handleRentsChange}/>
+    <TextField className="outlined-basic" label="Bursa" type="number" variant="outlined" onChange={handleSchoalrshipBonusChange}/>
+    <TextField className="outlined-basic" label="Alte venituri" type="number" variant="outlined" onChange={otherIncomesChange}/>
   </div>
 
 
@@ -266,10 +278,11 @@ function getStepContent(step) {
 
 export default function ProfileForm() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
+    console.log(activeStep);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -293,9 +306,9 @@ export default function ProfileForm() {
       <div className="form">
         {activeStep === steps.length ? (
           <div>
-            <Typography className={classes.instructions}>
+            <div className={classes.instructions}>
               All steps completed - you&apos;re finished
-            </Typography>
+            </div>
             <Button onClick={handleReset} className={classes.button}>
               Reset
             </Button>
@@ -315,7 +328,7 @@ export default function ProfileForm() {
                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
               </Button>
             </div>
-            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+            <div className={classes.instructions}> {getStepContent(activeStep)}</div>
           </div>
         )}
       </div>
