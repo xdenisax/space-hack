@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import '@firebase/firestore';
 
+
 const firebaseConfig = {    
     apiKey: "AIzaSyAjc1cq2hz8GZvJa-7L_t-WBX6WwfBrZHw",
     authDomain: "space-hack.firebaseapp.com",
@@ -11,7 +12,12 @@ const firebaseConfig = {
     measurementId: "G-ZM8BJQT3QX"
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+ } else {
+    firebase.app(); 
+ }
 
 var db = firebase.firestore();
-export default db;
+
+export {db, firebase };
