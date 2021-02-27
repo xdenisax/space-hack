@@ -320,11 +320,18 @@ export default function ProfileForm(props) {
           label="Sa imi cumpar o masina."
         />
       </FormGroup>
-      <FormHelperText>Alegeti maxim doua aspecte care sunt importante pentru dumneavoastra</FormHelperText>
+      <FormHelperText>Alegeti maximum doua aspecte care sunt importante pentru dumneavoastra</FormHelperText>
     </FormControl>
       <div>
-        <TextField className="outlined-basic" defaultValue={user.income} label="Venituri lunare" type="number" variant="outlined" onChange={handleIncomeChange}/>
-        <TextField className="outlined-basic" defaultValue={user.income} label="Venituri lunare" type="number" variant="outlined" onChange={handleIncomeChange}/>
+        { Object.keys(user.goals).map(goal => 
+          user.goals[goal] && Object.keys(user.goals).filter((v) => user.goals[v]).length <= 2
+          ? <TextField className="outlined-basic"  label={goal} type="number" variant="outlined" onChange={handleIncomeChange}/>
+          : ""
+        )}
+
+        {/* defaultValue={user.income} */}
+        {/* <TextField className="outlined-basic" defaultValue={user.income} label="Venituri lunare" type="number" variant="outlined" onChange={handleIncomeChange}/>
+        <TextField className="outlined-basic" defaultValue={user.income} label="Venituri lunare" type="number" variant="outlined" onChange={handleIncomeChange}/> */}
       </div>
   </div>
 
