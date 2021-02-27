@@ -1,0 +1,22 @@
+.nav-bar {
+    padding: 2rem;
+    background-color: #1769aa;
+    color: white;
+}
+
+.nav-bar nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.nav-elements {
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-elements li {
+    list-style-type: none;
+    margin: 0rem 1rem;
+}
