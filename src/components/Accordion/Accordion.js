@@ -27,7 +27,7 @@ export default function AccordionInfo(props) {
 
   return (
     <div className={classes.root}>
-      <Accordion>
+      <Accordion style={{"marginTop": "5px"}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -37,9 +37,9 @@ export default function AccordionInfo(props) {
         </AccordionSummary>
         <AccordionDetails>
             <div style={{"display":"flex", "flexDirection":"column" ,"width":"100%"}}>
-          <p style={{"marginTop":"0px", "textAlign":"start" }} >
-           {props.details}
-           </p>
+            <p style={{"marginTop":"0px", "textAlign":"start" }} >
+              {props.details}
+            </p>
 
           
           <div className={classes.details} style={{"marginTop":"9px"}}>

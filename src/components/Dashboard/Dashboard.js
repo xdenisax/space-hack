@@ -12,9 +12,10 @@ Tooltip,
 Legend,
 ResponsiveContainer,
 Cell,
-Rectangle,
 } from 'recharts';
 import './Dashboard.css';
+import CompoundCalculator from '../Compound Interest/CompundCalculator'
+
 import AccordionInfo from '../Accordion/Accordion';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
       textAlign: 'center',
       color: theme.palette.text.secondary,
-      height:'500px'
+      height:'600px'
     },
     fill :{
         width:'100%',
@@ -82,12 +83,12 @@ export default function Dashboard(props){
             title :'Dobanda bancara',
             details:'Reprezinta un procent din suma pe care o depui in banca. Banca promite returnarea unui procent din suma respectiva.',
             risk:'3/10',
-            return:'10%'
+            return:'3.5%'
         },{
             title :'ETF',
             details:'Este ca un cos de titluri – actiuni, obligatiuni, produse de baza sau o combinatie a acestora – pe care le poti cumpara si vinde prin intermediul unui broker.',
             risk:'4/10',
-            return:'10%'
+            return:'9.7%'
         },
         {
             title :'Imobiliare',
@@ -157,6 +158,11 @@ export default function Dashboard(props){
                             }
                             </div>
                         </Paper>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <Paper className={classes.paper}>
+                      <CompoundCalculator/>
+                      </Paper>
                     </Grid>
               </Grid>
         </div>
