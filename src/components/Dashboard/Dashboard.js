@@ -55,7 +55,6 @@ export default function Dashboard(props){
       {
         name: 'Obligatiuni',
         gradRisc: 1,
-      
       },
       {
         name: 'Dobanda bancara',
@@ -90,34 +89,45 @@ export default function Dashboard(props){
           title :'Obligatiuni',
           details:'Valori mobiliare care dau dreptul detinatorului lor la primirea unei dobanzi regulate (cupon) precum si la rambursarea principalului la scadenta.',
           risk:'2/10',
-          return:'2.5%'
+          returned:'2.5%',
+        gradRisc: 1,
+          
       },
       {
         title :'Dobanda bancara',
-        details:'Reprezinta un procent din suma pe care o depui in banca. Banca promite returnarea unui procent din suma respectiva.',
+        details:'Reprezinta un procent din suma pe care o depui in banca. Banca promite returnedarea unui procent din suma respectiva.',
         risk:'3/10',
-        return:'10%'
+        returned:'10%',
+        gradRisc: 1.5,
+
     },{
         title :'ETF',
         details:'Este ca un cos de titluri – actiuni, obligatiuni, produse de baza sau o combinatie a acestora – pe care le poti cumpara si vinde prin intermediul unui broker.',
         risk:'4/10',
-        return:'10%'
+        returned:'10%',
+        gradRisc: 2.5,
+
     },
     {
         title :'Imobiliare',
         details:'Poti obtine venituri pasive din inchirierea acestora + trebuie luata in considerarea si aprecierea acetora in timp',
         risk:'5/10',
-        return:'10%'
+        returned:'10%',
+        gradRisc: 3.5,
+
     },{
         title :'Actiuni individuale',
         details:'O unitate de proprietate a unei companii. Companiile vand actiuni pentru a obtine capital. Ca urmare, actionarii pot castiga dividende, alocari de profit, pentru actiunile acestora si o rentabilitate a investitiei acestora dacă pretul actiunilor creste.',
         risk:'7/10',
-        return:'10%'
+        returned:'10%',
+        gradRisc: 4.5,
+
     },{
         title :'Cryptomonede',
         details:'Un activ digital cu o volatilitate ridicata. Cel mai cunoscut dintre acestea este bitcoin cu o crestere de la 1$-2$ la approx. 50.000$',
         risk:'9/10',
-        return:'10%'
+        returned:'10%',
+        gradRisc: 5,
     }
   ]
 
@@ -137,6 +147,12 @@ export default function Dashboard(props){
     }
   }
   
+  const getReturn = (gradRisc) =>{
+   return (info.filter((inv)=>inv.gradRisc === gradRisc)[0].returned.replace("%",""));
+
+  }
+
+
   const setStats = () => {
     getUser(props.user.uid).then((user) => {
       let availableBalance = (user.income - user.expenses)*12 ;
@@ -160,8 +176,9 @@ export default function Dashboard(props){
 
   return (
       <div className="dashboard_container">
+
           <h1>Hi {props.user.displayName}!</h1>
-          <Grid container spacing={3}>
+{userStats.riskFactor ? (<Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                   <Paper className={classes.paper}>
                         <div className={classes.fill} style={{"marginLeft" :"-30px"}}>
@@ -203,7 +220,7 @@ export default function Dashboard(props){
                             <h3>Ce inseamna toate?</h3>
                             {
                                 info.map((entry, i) =>{
-                                    return(<AccordionInfo key = {i} details ={entry.details} title={entry.title} risk={entry.risk} return={entry.return}/>)
+                                    return(<AccordionInfo key = {i} details ={entry.details} title={entry.title} risk={entry.risk} return={entry.returned}/>)
                                 })
                             }
                             </div>
@@ -211,11 +228,13 @@ export default function Dashboard(props){
                     </Grid>
                     <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                      <CompoundCalculator/>
+                      <CompoundCalculator returned={getReturn(findInvestment(userStats.riskFactor))} user = {userStats}/>
                       </Paper>
                     </Grid>
               </Grid>
-                    
+                    ) : (<h1>Loading</h1>)}
+
+          
   </div>
   )
     

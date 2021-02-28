@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, TextField } from '@material-ui/core';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
@@ -23,11 +23,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CompoundCalculator(props) {
   const classes = useStyles();
-  const [principal, setPrincipal] = useState();
-  const [monthly, setMonthly] = useState();
+  const [principal, setPrincipal] = useState("0");
+  const [monthly, setMonthly] = useState(props.user.availableBalance/12);
 
-  const [years, setYears] = useState();
-  const [interest, setInterest] = useState();
+  const [years, setYears] = useState("5");
+  const [interest, setInterest] = useState(props.returned);
   const [result, setResult] = useState();
   const [chartData, setChartData] = useState([]);
   const investments = [
@@ -54,13 +54,15 @@ export default function CompoundCalculator(props) {
 
   };
 
+  useEffect(()=> console.log(props), [])
+
   return (
     <div className={classes.root}>
         <div className={classes.details}>
-            <TextField label="Investitie initiala" type="number" variant="outlined"  onChange={(e) => setPrincipal(e.target.value)}></TextField>
-            <TextField label="Contributie lunara" type="number"  variant="outlined"  onChange={(e) => setMonthly(e.target.value)}></TextField>
-            <TextField label="Anii de investitie" type="number"  variant="outlined"  onChange={(e) => setYears(e.target.value)}></TextField>
-            <TextField label="Randament anual" type="number"  variant="outlined"     onChange={(e) => setInterest(e.target.value)}></TextField>
+            <TextField label="Investitie initiala" type="number" variant="outlined"  defaultValue="0" onChange={(e) => setPrincipal(e.target.value)}></TextField>
+            <TextField label="Contributie lunara" type="number"  variant="outlined" defaultValue={props.user.availableBalance/12} onChange={(e) => setMonthly(e.target.value)}></TextField>
+            <TextField label="Anii de investitie" type="number"  variant="outlined" defaultValue="5" onChange={(e) => setYears(e.target.value)}></TextField>
+            <TextField label="Randament anual" type="number"  variant="outlined"    defaultValue={props.returned} onChange={(e) => setInterest(e.target.value)}></TextField>
             <Button
                 variant="contained"
                 color="primary"
