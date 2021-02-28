@@ -6,6 +6,9 @@ import { firebase }from '../../firebase/FirebaseConfig';
 
 class NavBar extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
 
   handleLogOut() {
     firebase.auth().signOut().then((response) => {
@@ -23,8 +26,8 @@ class NavBar extends React.Component {
                     <h2 className="nav-logo">Quity.</h2>
                 </div>
                 <ul className="nav-elements">
-                    <li>Planificare</li>
-                    <li>Profil</li>
+                    <li onClick={() => this.props.handleNavChange(false)}>Planificare</li>
+                    <li onClick={() => this.props.handleNavChange(true)}>Profil</li>
                     <IconButton 
                         onClick ={()=> this.handleLogOut()}
                         style={{"padding":"0", "color":"white"}}>

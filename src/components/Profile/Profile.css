@@ -1,0 +1,31 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    padding: 5rem;
+    margin: 5rem 15vw;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 30px 5px rgba(168, 166, 166, 0.24);
+}
+
+.personal-info {
+    display: flex;
+    align-items: flex-end;
+}
+
+.personal-info div {
+    margin: 1rem;
+}
+
+.profile img {
+    margin: 1rem;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 30px 5px rgba(168, 166, 166, 0.24);
+}
+
+.profile p{
+    margin:0;
+}
+.profile h4 {
+    margin:0;
+    margin-top: 1rem;
+}

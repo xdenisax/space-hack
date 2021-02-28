@@ -149,7 +149,6 @@ export default function Dashboard(props){
   
   const getReturn = (gradRisc) =>{
    return (info.filter((inv)=>inv.gradRisc === gradRisc)[0].returned.replace("%",""));
-
   }
 
 
