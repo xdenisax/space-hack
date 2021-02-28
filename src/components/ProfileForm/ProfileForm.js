@@ -22,6 +22,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import RadioQuestion from '../Question/RadioQuestion';
+import { db } from '../../firebase/FirebaseConfig'
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -161,6 +162,7 @@ function getSteps() {
 }
 
 export default function ProfileForm(props) {
+  const {user: userDB} = props;
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [user, setUserInfo] = React.useState({
@@ -169,11 +171,11 @@ export default function ProfileForm(props) {
     expenses: 0, 
     riskArray: [],
     goals: {
-      travel: false,
-      longTerm: false,
-      credits: false,
-      house: false, 
-      car: false
+      Travel: false,
+      LongTerm: false,
+      Credits: false,
+      House: false, 
+      Car: false
     }
   });
   const [error, setError] = React.useState(true);
@@ -187,10 +189,10 @@ export default function ProfileForm(props) {
         setError(user.income ? false : true);
         break;
       case 2:
-        setError(Object.keys(user.goals).filter((v) => user.goals[v]).length > 2);
+        setError(Object.keys(user.goals).filter((v) => user.goals[v]).length > 2 );
         break;
       case 3:
-        setError(false);
+        setError(Object.keys(user.riskArray).filter((v) => user.riskArray[v]).length !== 5);
         break;
       case 4:
         setError(user.expenses ? false : true);
@@ -201,7 +203,7 @@ export default function ProfileForm(props) {
   }, [user, activeStep]);
 
   const handleNext = () => {
-    console.log(user);
+    writeToDB();
     setError(true);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -212,7 +214,7 @@ export default function ProfileForm(props) {
   };
 
   const handleReset = () => {
-    setActiveStep(0);
+    props.setFirstLogin(false);
   };
 
   const handleDateChange = (birthday) => {
@@ -265,6 +267,22 @@ export default function ProfileForm(props) {
     });
   }
 
+  const handleGoalsInput = (event) => {
+    setUserInfo(prevUser => {
+      return {
+        ...prevUser,
+        goalsNeeds: {
+          ...prevUser.goalsNeeds,
+          [event.target.name]: event.target.value
+        }
+      }
+    });
+  }
+
+  const writeToDB = () => {
+    db.collection("users").doc(userDB.uid).set(user);
+  }
+
   const birthDateCompoenent = 
   <div className="question">
     <TextField
@@ -300,38 +318,34 @@ export default function ProfileForm(props) {
       <FormLabel component="legend">Pentru mine este important sa: </FormLabel>
       <FormGroup>
         <FormControlLabel
-          control={<Checkbox defaultValue={user.goals.travel} onChange={hangleSingleGoalChange} name="travel" />}
+          control={<Checkbox defaultValue={user.goals.Travel} onChange={hangleSingleGoalChange} name="Travel" />}
           label="Merg in vacanta cel putin o data pe an."
         />
         <FormControlLabel
-          control={<Checkbox defaultValue={user.goals.longTerm} onChange={hangleSingleGoalChange} name="longTerm" />}
+          control={<Checkbox defaultValue={user.goals.LongTerm} onChange={hangleSingleGoalChange} name="LongTerm" />}
           label="Sa am bani pusi de-o parte pentru educatia copiiilor/pensionare/evenimente indepartate."
         />
         <FormControlLabel
-          control={<Checkbox  defaultValue={user.goals.credits}  onChange={hangleSingleGoalChange} name="credits" />}
+          control={<Checkbox  defaultValue={user.goals.Credits}  onChange={hangleSingleGoalChange} name="Credits" />}
           label="Sa rambursez creditul."
         />
         <FormControlLabel
-          control={<Checkbox  defaultValue={user.goals.house}  onChange={hangleSingleGoalChange} name="house" />}
+          control={<Checkbox  defaultValue={user.goals.House}  onChange={hangleSingleGoalChange} name="House" />}
           label="Sa imi cumpar o casa."
         />
         <FormControlLabel
-          control={<Checkbox  defaultValue={user.goals.car}  onChange={hangleSingleGoalChange} name="car" />}
+          control={<Checkbox  defaultValue={user.goals.Car}  onChange={hangleSingleGoalChange} name="Car" />}
           label="Sa imi cumpar o masina."
         />
       </FormGroup>
       <FormHelperText>Alegeti maximum doua aspecte care sunt importante pentru dumneavoastra</FormHelperText>
     </FormControl>
       <div>
-        { Object.keys(user.goals).map(goal => 
+        { Object.keys(user.goals).map((goal, index) => 
           user.goals[goal] && Object.keys(user.goals).filter((v) => user.goals[v]).length <= 2
-          ? <TextField className="outlined-basic"  label={goal} type="number" variant="outlined" onChange={handleIncomeChange}/>
+          ? <TextField className="outlined-basic" name={goal} key={index} label={goal} type="number" variant="outlined" onChange={handleGoalsInput}/>
           : ""
         )}
-
-        {/* defaultValue={user.income} */}
-        {/* <TextField className="outlined-basic" defaultValue={user.income} label="Venituri lunare" type="number" variant="outlined" onChange={handleIncomeChange}/>
-        <TextField className="outlined-basic" defaultValue={user.income} label="Venituri lunare" type="number" variant="outlined" onChange={handleIncomeChange}/> */}
       </div>
   </div>
 

@@ -17,6 +17,10 @@ class App extends React.Component {
     };
   }
 
+  setFirstLogin = (bool) => {
+    this.setState({isFirstLogin: bool});
+  }
+
   componentDidMount() {
     
     auth.onAuthStateChanged((user) => {
@@ -47,7 +51,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        {this.state.user === null ? (<Authentication  />) : (<MainScreen isFirstLogin ={this.state.isFirstLogin} user ={this.state.user}/>)}
+        {this.state.user === null ? (<Authentication  />) : (<MainScreen isFirstLogin ={this.state.isFirstLogin} user ={this.state.user} setFirstLogin={this.setFirstLogin}/>)}
      </div>
     );
   }

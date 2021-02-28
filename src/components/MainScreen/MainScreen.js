@@ -13,7 +13,7 @@ export default class MainScreen extends React.Component{
         return (
            <div>
                <NavBar/>
-               {this.props.isFirstLogin ? (<ProfileForm/>) : (<Dashboard user ={this.props.user}/>)}
+               {this.props.isFirstLogin ? (<ProfileForm user ={this.props.user} setFirstLogin={this.props.setFirstLogin}/>) : (<Dashboard user ={this.props.user}/>)}
            </div>
         )
     }
