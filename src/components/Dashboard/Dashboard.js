@@ -82,8 +82,7 @@ export default function Dashboard(props){
           gradRisc: 5,
           
         },
-          
-      ];
+    ];
     
   const info =
   [
@@ -216,6 +215,7 @@ export default function Dashboard(props){
                       </Paper>
                     </Grid>
               </Grid>
+                    
   </div>
   )
     
