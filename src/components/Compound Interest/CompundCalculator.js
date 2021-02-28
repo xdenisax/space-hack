@@ -40,7 +40,7 @@ export default function CompoundCalculator(props) {
     investments[0] = {contribution: 0, value: 0, name:`Year 0`}
     investments[0].contribution = parseInt(principal);
     investments[0].value = parseInt(principal);
-
+    let count =0;
     for(let i  = 1; i <= parseInt(years); i++ ){
             investments[i] = { contribution: 0, value: 0, name:`Year ${i}`}
             investments[i].contribution = investments[i-1].contribution + (12 * parseInt(monthly));
@@ -49,7 +49,25 @@ export default function CompoundCalculator(props) {
     
     const result = parseInt(principal) * Math.pow(1 + division,months) + parseInt(monthly) *( (Math.pow(1+division, months)-1) / division);
     console.log(investments)
-    setResult(result.toFixed(2));
+
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'RON',
+    
+      // These options are needed to round to whole numbers if that's what you want.
+      //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+      //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    });
+    
+    let total = 0;
+    
+    while ( total < props.user.expenses * 100 /60 * 12 * 100 / parseInt(interest)){
+      total = (parseInt(principal) * Math.pow(1 + division,12*count) + parseInt(monthly) *( (Math.pow(1+division, 12*count)-1) / division))
+      count ++;
+    }
+    //const sum = props.user.expenses * 100 /60 * 12 * 100 / parseInt(interest);
+    console.log(total, count);
+    setResult(formatter.format(result));
     setChartData(investments);
 
   };
@@ -74,7 +92,7 @@ export default function CompoundCalculator(props) {
         </div>
         {chartData.length > 0 ? (
               <div style={{"width":"80%", "height":"400px", "marginTop":"30px"}}  className="chart">
-                  <h3>In {years} ani vei avea {result} RON</h3>
+                  <h3>In {years} ani vei avea {result}</h3>
                   <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                   width={500}

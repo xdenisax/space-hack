@@ -3,8 +3,6 @@ import { db } from '../../firebase/FirebaseConfig'
 import React, { useEffect } from 'react';
 import{
 ComposedChart,
-Line,
-Area,
 Bar,
 XAxis,
 YAxis,
@@ -28,6 +26,13 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.secondary,
       height:'600px'
     },
+    topPaper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+      height:'120px',
+      padding:'20px'
+    },
     fill :{
         width:'100%',
         height:'100%'
@@ -50,38 +55,6 @@ export default function Dashboard(props){
   
   // gradul de risc
   // suma ramasa 
-
-  const data = [
-      {
-        name: 'Obligatiuni',
-        gradRisc: 1,
-      },
-      {
-        name: 'Dobanda bancara',
-        gradRisc: 1.5,
-      
-      },
-        {
-          name: 'ETF',
-          gradRisc: 2.5,
-          
-        },
-        {
-          name: 'Imobiliare',
-          gradRisc: 3.5,
-          
-        },
-        {
-          name: 'Actiuni individuale',
-          gradRisc: 4.5,
-          
-        },
-        {
-          name: 'Cryptomonede',
-          gradRisc: 5,
-          
-        },
-    ];
     
   const info =
   [
@@ -90,8 +63,7 @@ export default function Dashboard(props){
           details:'Valori mobiliare care dau dreptul detinatorului lor la primirea unei dobanzi regulate (cupon) precum si la rambursarea principalului la scadenta.',
           risk:'2/10',
           returned:'2.5%',
-        gradRisc: 1,
-          
+          gradRisc: 1,
       },
       {
         title :'Dobanda bancara',
@@ -116,14 +88,14 @@ export default function Dashboard(props){
         gradRisc: 3.5,
 
     },{
-        title :'Actiuni individuale',
+        title :'Actiuni',
         details:'O unitate de proprietate a unei companii. Companiile vand actiuni pentru a obtine capital. Ca urmare, actionarii pot castiga dividende, alocari de profit, pentru actiunile acestora si o rentabilitate a investitiei acestora dacă pretul actiunilor creste.',
         risk:'7/10',
         returned:'10%',
         gradRisc: 4.5,
 
     },{
-        title :'Cryptomonede',
+        title :'Crypto',
         details:'Un activ digital cu o volatilitate ridicata. Cel mai cunoscut dintre acestea este bitcoin cu o crestere de la 1$-2$ la approx. 50.000$',
         risk:'9/10',
         returned:'10%',
@@ -151,6 +123,10 @@ export default function Dashboard(props){
    return (info.filter((inv)=>inv.gradRisc === gradRisc)[0].returned.replace("%",""));
   }
 
+  const getName = (gradRisc) => {
+   return (info.filter((inv)=>inv.gradRisc === gradRisc)[0].title);
+
+  }
 
   const setStats = () => {
     getUser(props.user.uid).then((user) => {
@@ -160,8 +136,9 @@ export default function Dashboard(props){
       }
       setUser(prevUser => ({...prevUser, availableBalance}));
       let riskFactor = user.riskArray.reduce((total, currentValue) => total + currentValue) /  user.riskArray.length + getAgeRisk(user);
- 
-      setUser(prevUser => ({...prevUser, riskFactor}));
+      let expenses = user.expenses;
+      setUser(prevUser => ({...prevUser, riskFactor, expenses}));
+     
     });
   }  
 
@@ -173,11 +150,61 @@ export default function Dashboard(props){
   
   useEffect(() => setStats(), []);
 
+  const fillRectangles = (entry) => {
+    const risk = findInvestment(userStats.riskFactor);
+    if((entry.gradRisc - 1) === risk  ){
+      return "#00b7cc";
+    } else if (entry.gradRisc === risk) {
+      return '#00e5ff';
+    } else if ((entry.gradRisc + 1) === risk   ) {
+      return '#00b7cc';
+    }
+     return "#005599";
+  }
+
+  const getRiskRange = () =>{
+    const risk = findInvestment(userStats.riskFactor);
+    if(risk < 2.5){
+      return "Conservativa"
+    } else if(risk <= 3.5 ) {
+      return "Moderata"
+    } else {
+      return "Agresiva"
+    }
+  }
+
+  const getDescription = () =>{
+    const risk = findInvestment(userStats.riskFactor);
+    const name = getName(risk);
+    if(risk < 2.5){
+      return `Conform analizei noastre esti potrivit pentru a iti incepe investitiile tale in ${name}. Acestea sunt instrumente financiare cu un risc scazut dar si venituri pasive reduse. Totodata poti urmari in tabelul de mai jos si alte metode de investitii si gradul lor de risc`;
+    } else if(risk <= 3.5 ) {
+      return `Conform analizei noastre esti potrivit pentru a iti incepe investitiile tale in ${name}. Acestea sunt instrumente financiare cu un risc moderat ce iti asigura un venit pasiv si o apreciere in timp moderate. Totodata poti urmari in tabelul de mai jos si alte metode de investitii si gradul lor de risc.`
+    } else {
+      return `Conform analizei noastre esti potrivit pentru a iti incepe investitiile tale in ${name}. Acestea sunt instrumente financiare cu un risc ridicat ce iti pot aduce o apreciere in timp ridicata si chiar si venituri pasive ridicate. Totodata, acestea au o volatilitate mult mai crescuta, astfel banii tai pot fi pierduti mai rapid. Totodata poti urmari in tabelul de mai jos si alte metode de investitii si gradul lor de risc.`
+     
+    }
+  }
+
   return (
       <div className="dashboard_container">
 
           <h1>Hi {props.user.displayName}!</h1>
 {userStats.riskFactor ? (<Grid container spacing={3}>
+              <Grid xs={12}>
+                <Paper className={classes.topPaper}
+                >
+                  <div>
+                    <h4 style={{"textAlign" : "start"}}>
+                      Toleranta la risc: <strong>{getRiskRange()}</strong>
+                    </h4>
+                    <p style={{"textAlign" : "start"}}>
+                      {getDescription()}
+                    </p>
+                  </div>
+
+                </Paper>
+              </Grid>
               <Grid item xs={12} sm={6}>
                   <Paper className={classes.paper}>
                         <div className={classes.fill} style={{"marginLeft" :"-30px"}}>
@@ -186,7 +213,7 @@ export default function Dashboard(props){
 
                                   width={600}
                                   height={500}
-                                  data={data}
+                                  data={info}
                                   margin={{
                                   top: 20,
                                   right: 20,
@@ -195,14 +222,14 @@ export default function Dashboard(props){
                               }}
                               >
                               <CartesianGrid stroke="#f5f5f5" />
-                              <XAxis dataKey="name" scale="band" />
-                              <YAxis />
+                              <XAxis dataKey="title" scale="band" />
+                              <YAxis label="Risc" orientation="left" padding={{ right: 20, bottom: 20 }} />
                               <Tooltip />
-                              <Legend />
-                              <Bar dataKey="value" dataKey="gradRisc" barSize={80}>
+                           
+                              <Bar dataKey="gradRisc" barSize={80}>
                               {
-                                  data.map((entry, index) => (
-                                      <Cell key={index} fill={entry.gradRisc === findInvestment(userStats.riskFactor) ? '#00e5ff' : '#005599' }/>
+                                  info.map((entry, index) => (
+                                      <Cell key={index} fill={fillRectangles(entry) }/>
                                   ))
                               }
                               </Bar>    
