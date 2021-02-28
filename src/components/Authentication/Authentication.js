@@ -58,7 +58,7 @@ class Authentication extends React.Component {
         <div>   
             <h1 className = "logo">Quity.</h1>
             <div style={this.centeredStyle} className="Authentication">
-                <h1>Pregatit sa demisionezi?</h1>
+                <h1>Nu trebuie sa fii batran ca sa iesi la pensie! </h1>
                     <Button variant="contained" 
                         style={{"textAlign":"center"}} 
                         color="primary" 

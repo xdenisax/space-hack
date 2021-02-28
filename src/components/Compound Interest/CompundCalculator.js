@@ -25,7 +25,8 @@ export default function CompoundCalculator(props) {
   const classes = useStyles();
   const [principal, setPrincipal] = useState("0");
   const [monthly, setMonthly] = useState(props.user.availableBalance/12);
-
+  const [total, setTotal] = useState();
+  const [yearsToRetire, setYearsToRetire] = useState();
   const [years, setYears] = useState("5");
   const [interest, setInterest] = useState(props.returned);
   const [result, setResult] = useState();
@@ -48,8 +49,7 @@ export default function CompoundCalculator(props) {
         }
     
     const result = parseInt(principal) * Math.pow(1 + division,months) + parseInt(monthly) *( (Math.pow(1+division, months)-1) / division);
-    console.log(investments)
-
+  
     var formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'RON',
@@ -68,6 +68,8 @@ export default function CompoundCalculator(props) {
     //const sum = props.user.expenses * 100 /60 * 12 * 100 / parseInt(interest);
     console.log(total, count);
     setResult(formatter.format(result));
+    setTotal(formatter.format(total));
+    setYearsToRetire(count);
     setChartData(investments);
 
   };
@@ -93,6 +95,7 @@ export default function CompoundCalculator(props) {
         {chartData.length > 0 ? (
               <div style={{"width":"80%", "height":"400px", "marginTop":"30px"}}  className="chart">
                   <h3>In {years} ani vei avea {result}</h3>
+                  <h3>Te pensionezi cu {total} in {yearsToRetire} ani.</h3>
                   <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                   width={500}
