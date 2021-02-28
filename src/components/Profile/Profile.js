@@ -67,7 +67,7 @@ export default class Profile extends React.Component{
                     </div>
                 </div>
                 <h4>Pentru mine mine sunt importante urmatoarele categorii: </h4>
-                {Object.keys(this.state.userInfo.goalsNeeds).map( (goal) => <p>{goal}</p>)}
+                {Object.keys(this.state.userInfo.goalsNeeds).map( (goal, index) => <p key={index}>{goal}</p>)}
                 <h4>Ma expun la un risc: </h4>
                 {this.getRiskFactor() < 2.5 
                     ? "Mic"

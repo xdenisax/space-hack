@@ -217,8 +217,8 @@ export default function ProfileForm(props) {
     props.setFirstLogin(false);
   };
 
-  const handleDateChange = (birthday) => {
-    setUserInfo((prevUser) => ({...prevUser, birthday}));
+  const handleDateChange = (birth) => {
+    setUserInfo((prevUser) => ({...prevUser, birthday: birth.target.value}));
   }
 
   const handleIncomeChange= (event) => {
